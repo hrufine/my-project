@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { LogService } from './log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,7 @@ export class StarWarsService {
   onSideChosen(charInfo){
     const pos = this.characters.findIndex((char)=>char.name == charInfo.name);
     this.characters[pos].side = charInfo.side;
+    this.logService.writeLog(`Changed side ${charInfo.name},new side ${charInfo.side}`);
 }
-  constructor() { }
+  constructor(private logService:LogService) { }
 }
