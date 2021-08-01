@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { LogService } from './log.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StarWarsService {
+  charactersChanged = new Subject<void>();
   private characters = [
     {
       name: 'Jishnu',
@@ -15,6 +17,7 @@ export class StarWarsService {
       side: '',
     },
   ];
+  constructor(private logService: LogService) {}
   getCharacters(chosenList) {
     if (chosenList === 'all') {
       return this.characters.slice();
@@ -27,6 +30,7 @@ export class StarWarsService {
     this.logService.writeLog(
       `Changed side ${charInfo.name},new side ${charInfo.side}`
     );
+    this.charactersChanged.next();
   }
   addCharacter(name, side) {
     const pos = this.characters.findIndex((char) => char.name == name);
@@ -36,5 +40,5 @@ export class StarWarsService {
     const newChar = { name, side };
     this.characters.push(newChar);
   }
-  constructor(private logService: LogService) {}
+
 }
